@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>30-Day Content Planner</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .hashtag {
+            background-color: #e2e8f0; /* Light gray background */
+            color: #3b82f6; /* Blue text */
+            padding: 0.25rem 0.5rem; /* Padding */
+            border-radius: 0.375rem; /* Rounded corners */
+            margin-right: 0.25rem; /* Small right margin */
+            margin-bottom: 0.25rem;
+            cursor: pointer; /* Show a pointer cursor on hover */
+            font-size: 0.875rem; /* 14px */
+            display: inline-block; /* Ensure it behaves like a link */
+        }
+
+        .hashtag:hover {
+            background-color: #d1d8e3; /* Slightly darker background on hover */
+        }
+
+    </style>
+</head>
+<body class="bg-gray-100 p-6">
+    <div class="container max-w-2xl mx-auto bg-white shadow-md rounded-lg p-8">
+        <h1 class="text-2xl font-semibold text-blue-600 text-center mb-6">30-Day Content Planner</h1>
+
+        <form id="contentForm" class="mb-6 space-y-4">
+            <div>
+                <label for="businessType" class="block text-gray-700 text-sm font-bold mb-2">Business Type/Niche:</label>
+                <input type="text" id="businessType" name="businessType" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+            </div>
+            <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Generate Content Ideas</button>
+        </form>
+
+        <div id="results" class="hidden">
+            <h2 class="text-xl font-semibold text-gray-800 text-center mb-4">Content Ideas for 30 Days</h2>
+            <div id="contentIdeas" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
+                </div>
+
+            <h2 class="text-lg font-semibold text-gray-800 text-center mb-4">Scheduling Recommendations</h2>
+            <div id="schedulingRecommendations" class="mb-6 text-gray-700">
+                </div>
+
+            <h2 class="text-lg font-semibold text-gray-800 text-center mb-4">Hashtag Suggestions</h2>
+            <div id="hashtagSuggestions" class="mb-6 text-gray-700 flex flex-wrap gap-2">
+                </div>
+
+            <button id="exportCsv" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline block mx-auto">Export to CSV</button>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('contentForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            let businessType = document.getElementById('businessType').value;
+
+            if (businessType.trim() === '') {
+                alert('Please enter your business type or niche.');
+                return;
+            }
+
+            let ideas = generateContentIdeas(businessType);
+            displayContentIdeas(ideas);
+            displaySchedulingRecommendations(businessType); // Pass businessType
+            displayHashtagSuggestions(businessType); // Pass businessType
+            document.getElementById('results').classList.remove('hidden');
+            localStorage.setItem('contentPlan', JSON.stringify({ businessType: businessType, ideas: ideas, timestamp: Date.now() }));
+
+            // Show notification on return
+            if (localStorage.getItem('contentPlan')) {
+                const savedData = JSON.parse(localStorage.getItem('contentPlan'));
+                const timeDiff = Date.now() - savedData.timestamp;
+                const daysDiff = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
+
+                if (daysDiff < 7) { // Only show if it's less than 7 days
+                    alert(`Welcome back! Your content plan from ${daysDiff} day(s) ago is ready.`);
+                }
+            }
+        });
+
+        function generateContentIdeas(businessType) {
+            const contentIdeas = [];
+            const types = [
+                "Blog Post", "Infographic", "Video", "Podcast", "Social Media Post", "Email Newsletter",
+                "Case Study", "Webinar", "E-book", "Checklist", "Template", "Quiz", "Poll",
+                "Behind the Scenes", "Customer Story", "Interview", "Live Stream", "AMA Session",
+                "Product Tutorial", "Problem Solution", "Tip/Trick", "Myth Busting", "Comparison",
+                "Review", "Roundup", "How-to Guide", "Top List", "Inspirational Quote", "Statistic"
+            ];
+
+            for (let i = 1; i <= 30; i++) {
+                const day = i;
+                const type = types[Math.floor(Math.random() * types.length)];
+                contentIdeas.push({
+                    day: day,
+                    type: type,
+                    title: `${type} Idea for Day ${day}: ${generateTitle(businessType, type)}`
+                });
+            }
+            return contentIdeas;
+        }
+
+        function generateTitle(businessType, type) {
+            const keywords = businessType.split(" ");
+            const titleStarters = [
+                "Top",
+                "Best",
+                "How to",
+                "What is",
+                "Why",
+                "Guide to",
+                "The Future of",
+                "A Beginner's Guide to",
+                "X Things You Need to Know About",
+                "The Ultimate Guide to"
+            ];
+            const titleEndings = [
+                "in " + businessType,
+                "for " + businessType,
+                "tips",
+                "strategies",
+                "trends",
+                "mistakes to avoid",
+                "hacks",
+                "secrets",
+                "explained",
+                "breakdown"
+            ];
+
+            const randomStarter = titleStarters[Math.floor(Math.random() * titleStarters.length)];
+            const randomEnding = titleEndings[Math.floor(Math.random() * titleEndings.length)];
+            const keyword = keywords[Math.floor(Math.random() * keywords.length)] || "";
+
+            return `${randomStarter} ${type} ${keyword} ${randomEnding}`;
+        }
+
+        function displayContentIdeas(ideas) {
+            let ideasDiv = document.getElementById('contentIdeas');
+            ideasDiv.innerHTML = '';
+            ideas.forEach(idea => {
+                let ideaCard = document.createElement('div');
+                ideaCard.classList.add('bg-white', 'rounded-md', 'shadow-sm', 'p-4', 'border-l-4', 'border-blue-500');
+                ideaCard.innerHTML = `<h3 class="text-lg font-semibold text-gray-800 mb-2">Day ${idea.day}: ${idea.type}</h3>
+                                     <p class="text-gray-700">${idea.title}</p>`;
+                ideasDiv.appendChild(ideaCard);
+            });
+        }
+
+        function displaySchedulingRecommendations(businessType) {
+            let scheduleDiv = document.getElementById('schedulingRecommendations');
+            let recommendations = `<p class="mb-2"><strong>General Recommendation:</strong> Consistency is key! Aim to post at least 3-5 times per week.</p>
+                                     <ul class="list-disc list-inside">`;
+
+            const platforms = getPlatformRecommendations(businessType);
+
+             recommendations += `<li><strong>Monday:</strong> ${platforms.monday.join(', ')} - Blog post or in-depth article.</li>`;
+             recommendations += `<li><strong>Tuesday:</strong> ${platforms.tuesday.join(', ')} - Social media engagement (polls, Q&A).</li>`;
+             recommendations += `<li><strong>Wednesday:</strong> ${platforms.wednesday.join(', ')} - Video or live stream.</li>`;
+             recommendations += `<li><strong>Thursday:</strong> ${platforms.thursday.join(', ')} - Customer story or case study.</li>`;
+             recommendations += `<li><strong>Friday:</strong> ${platforms.friday.join(', ')} - Roundup or top list, or a fun social media post.</li>`;
+                                     
+            recommendations +=  `</ul><p class="mt-2">Adapt this schedule to your specific audience and platform.  Use analytics to refine your timing.</p>`;
+            scheduleDiv.innerHTML = recommendations;
+        }
+
+        function getPlatformRecommendations(businessType) {
+            const businessTypeLower = businessType.toLowerCase();
+            const recommendations = {
+                monday: [],
+                tuesday: [],
+                wednesday: [],
+                thursday: [],
+                friday: []
+            };
+
+            // Enhanced platform recommendations based on business type
+            if (businessTypeLower.includes("fashion")) {
+                recommendations.monday.push("Blog", "Instagram");
+                recommendations.tuesday.push("Instagram", "TikTok");
+                recommendations.wednesday.push("YouTube", "Instagram");
+                recommendations.thursday.push("Pinterest");
+                recommendations.friday.push("Instagram", "TikTok");
+            } else if (businessTypeLower.includes("food") || businessTypeLower.includes("restaurant")) {
+                recommendations.monday.push("Blog");
+                recommendations.tuesday.push("Instagram", "Facebook");
+                recommendations.wednesday.push("YouTube", "TikTok");
+                recommendations.thursday.push("Facebook");
+                recommendations.friday.push("Instagram");
+            } else if (businessTypeLower.includes("tech") || businessTypeLower.includes("software")) {
+                recommendations.monday.push("Blog", "LinkedIn");
+                recommendations.tuesday.push("Twitter");
+                recommendations.wednesday.push("YouTube", "Twitch");
+                recommendations.thursday.push("Case Study", "LinkedIn");
+                recommendations.friday.push("Twitter", "Hacker News");
+            } else if (businessTypeLower.includes("travel") || businessTypeLower.includes("tourism")) {
+                recommendations.monday.push("Blog");
+                recommendations.tuesday.push("Instagram");
+                recommendations.wednesday.push("YouTube");
+                recommendations.thursday.push("Pinterest");
+                recommendations.friday.push("Instagram", "Facebook");
+            } else if (businessTypeLower.includes("health") || businessTypeLower.includes("fitness")) {
+                recommendations.monday.push("Blog");
+                recommendations.tuesday.push("Instagram", "Facebook");
+                recommendations.wednesday.push("YouTube");
+                recommendations.thursday.push("Facebook Group");
+                recommendations.friday.push("Instagram");
+            } else {
+                // Default recommendations
+                recommendations.monday.push("Blog");
+                recommendations.tuesday.push("Social Media");
+                recommendations.wednesday.push("Video");
+                recommendations.thursday.push("Case Study");
+                recommendations.friday.push("Social Media");
+            }
+            return recommendations;
+        }
+
+        function displayHashtagSuggestions(businessType) {
+            let hashtagDiv = document.getElementById('hashtagSuggestions');
+            hashtagDiv.innerHTML = '';
+            const hashtags = generateHashtags(businessType);
+            hashtags.forEach(hashtag => {
+                let hashtagSpan = document.createElement('span');
+                hashtagSpan.classList.add('hashtag');
+                hashtagSpan.textContent = hashtag;
+                hashtagSpan.addEventListener('click', function() {
+                    navigator.clipboard.writeText(hashtag).then(() => {
+                        alert(`Hashtag "${hashtag}" copied to clipboard!`);
+                    }).catch(err => {
+                        console.error('Failed to copy: ', err);
+                    });
+                });
+                hashtagDiv.appendChild(hashtagSpan);
+            });
+        }
+
+        function generateHashtags(businessType) {
+            const businessKeywords = businessType.split(" ");
+            const commonHashtags = ["#instagood", "#photooftheday", "#fashion", "#beautiful", "#happy", "#cute", "#tbt", "#like4like", "#followme", "#picoftheday", "#follow", "#me", "#selfie", "#summer", "#art", "#instadaily", "#friends"];
+            let suggestedHashtags = new Set();
+
+            // Add hashtags related to business type
+              businessKeywords.forEach(keyword => {
+                const lowerCaseKeyword = keyword.toLowerCase();
+                if (lowerCaseKeyword === "fashion") {
+                    suggestedHashtags.add("#fashionstyle");
+                    suggestedHashtags.add("#instafashion");
+                    suggestedHashtags.add("#fashionblogger");
+                } else if (lowerCaseKeyword === "food" || lowerCaseKeyword === "restaurant") {
+                    suggestedHashtags.add("#foodporn");
+                    suggestedHashtags.add("#instafood");
+                    suggestedHashtags.add("#foodphotography");
+                } else if (lowerCaseKeyword === "tech" || lowerCaseKeyword === "technology") {
+                    suggestedHashtags.add("#tech");
+                    suggestedHashtags.add("#innovation");
+                    suggestedHashtags.add("#coding");
+                } else if (lowerCaseKeyword === "travel") {
+                    suggestedHashtags.add("#travelgram");
+                    suggestedHashtags.add("#travelphotography");
+                    suggestedHashtags.add("#wanderlust");
+                } else if (lowerCaseKeyword === "health" || lowerCaseKeyword === "fitness") {
+                    suggestedHashtags.add("#healthylifestyle");
+                    suggestedHashtags.add("#fitnessmotivation");
+                    suggestedHashtags.add("#workout");
+                }
+            });
+
+            // Add some common hashtags
+            while (suggestedHashtags.size < 15 && commonHashtags.length > 0) {
+                const randomIndex = Math.floor(Math.random() * commonHashtags.length);
+                suggestedHashtags.add(commonHashtags[randomIndex]);
+                commonHashtags.splice(randomIndex, 1); //prevent duplicates
+            }
+            return Array.from(suggestedHashtags); //convert set to array
+        }
+
+        document.getElementById('exportCsv').addEventListener('click', function() {
+            let ideas = generateContentIdeas(document.getElementById('businessType').value);
+            let csvContent = "Day,Type,Title\n";
+            ideas.forEach(idea => {
+                csvContent += `${idea.day},${idea.type},"${idea.title.replace(/,/g, '')}"\n`; // basic CSV, remove commas from title
+            });
+
+            let blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            let url = URL.createObjectURL(blob);
+            let link = document.createElement("a");
+            link.setAttribute("href", url);
+            link.setAttribute("download", "content_calendar.csv");
+            link.style.visibility = 'hidden';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        });
+    </script>
+</body>
+</html>
