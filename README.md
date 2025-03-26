@@ -35,12 +35,6 @@ The 30-Day Content Planner is a web application designed to help businesses and 
 * CSS (Tailwind CSS)
 * JavaScript
 
-## Code Structure
-
-* `index.html`: Contains the HTML structure of the application, including the form, results display, and export button.
-* `style.css`: Contains the CSS styling for the application.
-* `script.js`: Contains the JavaScript logic for generating content ideas, scheduling recommendations, hashtag suggestions, and handling user interactions.
-
 ## Key Functions
 
 * `generateContentIdeas(businessType)`: Generates an array of content ideas for 30 days.
