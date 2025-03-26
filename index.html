@@ -29,6 +29,20 @@
     </style>
 </head>
 <body class="bg-gray-100 p-6">
+    <!-- Premium Banner - Add right after opening body tag -->
+    <div class="bg-blue-600 text-white p-4 text-center relative overflow-hidden">
+      <div class="container mx-auto">
+        <p class="font-bold">🚀 Unlock Premium: Get 90-day calendar, AI-powered ideas & custom branding</p>
+        <p class="text-sm mb-2">Special launch offer: <span class="font-bold">50% OFF</span> for the first 24 hours only!</p>
+        <div id="countdown" class="font-mono text-yellow-300 font-bold mb-2">23:59:59</div>
+        <button id="goPremium" class="bg-yellow-400 hover:bg-yellow-500 text-blue-900 font-bold py-1 px-4 rounded-full">
+          Upgrade Now
+        </button>
+      </div>
+      <!-- Animated background elements -->
+      <div class="absolute top-1/2 left-0 w-4 h-4 bg-yellow-300 rounded-full opacity-20"></div>
+      <div class="absolute top-1/4 right-1/4 w-6 h-6 bg-yellow-300 rounded-full opacity-20"></div>
+    </div>
     <div class="container max-w-2xl mx-auto bg-white shadow-md rounded-lg p-8">
         <h1 class="text-2xl font-semibold text-blue-600 text-center mb-6">30-Day Content Planner</h1>
 
@@ -39,7 +53,31 @@
             </div>
             <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Generate Content Ideas</button>
         </form>
-
+        <div id="toolsSection" class="mb-6 p-6 bg-gray-50 rounded-lg border border-gray-200">
+          <h2 class="text-xl font-semibold text-gray-800 text-center mb-4">Recommended Content Tools</h2>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <a href="https://canva.com" target="_blank" rel="noopener" class="flex flex-col items-center p-4 bg-white rounded-lg shadow-sm hover:shadow-md transition-all">
+              <img src="https://cdn.cdnlogo.com/logos/c/30/canva.svg" alt="Canva" class="w-12 h-12 mb-2">
+              <h3 class="font-bold text-gray-800">Canva Pro</h3>
+              <p class="text-center text-sm text-gray-600">Create stunning visuals for your content</p>
+              <span class="mt-2 text-xs px-2 py-1 bg-green-100 text-green-800 rounded-full">20% OFF</span>
+            </a>
+        
+            <a href="https://buffer.com" target="_blank" rel="noopener" class="flex flex-col items-center p-4 bg-white rounded-lg shadow-sm hover:shadow-md transition-all">
+              <img src="https://buffer.com/static/icons/buffer.svg" alt="Buffer" class="w-12 h-12 mb-2">
+              <h3 class="font-bold text-gray-800">Buffer</h3>
+              <p class="text-center text-sm text-gray-600">Schedule & publish your content</p>
+              <span class="mt-2 text-xs px-2 py-1 bg-green-100 text-green-800 rounded-full">14-day free trial</span>
+            </a>
+        
+            <a href="https://www.grammarly.com" target="_blank" rel="noopener" class="flex flex-col items-center p-4 bg-white rounded-lg shadow-sm hover:shadow-md transition-all">
+              <img src="https://static.grammarly.com/assets/files/cb6ce17d281d15f2c819mlk84d1a/favicon.ico" alt="Grammarly" class="w-12 h-12 mb-2">
+              <h3 class="font-bold text-gray-800">Grammarly</h3>
+              <p class="text-center text-sm text-gray-600">Perfect your content writing</p>
+              <span class="mt-2 text-xs px-2 py-1 bg-green-100 text-green-800 rounded-full">Special offer</span>
+            </a>
+          </div>
+        </div>
         <div id="results" class="hidden">
             <h2 class="text-xl font-semibold text-gray-800 text-center mb-4">Content Ideas for 30 Days</h2>
             <div id="contentIdeas" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
@@ -54,6 +92,54 @@
                 </div>
 
             <button id="exportCsv" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline block mx-auto">Export to CSV</button>
+        </div>
+        <div id="premiumFeatures" class="mt-8 p-6 bg-gray-50 rounded-lg border border-gray-200">
+          <h2 class="text-xl font-semibold text-gray-800 text-center mb-6">Free vs Premium Features</h2>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div class="bg-white p-5 rounded-lg shadow-sm">
+              <h3 class="font-bold text-lg text-center mb-4 text-gray-800">Free</h3>
+              <ul class="space-y-2">
+                <li class="flex items-center"><span class="text-green-500 mr-2">✓</span> 30-day content calendar</li>
+                <li class="flex items-center"><span class="text-green-500 mr-2">✓</span> Basic hashtag suggestions</li>
+                <li class="flex items-center"><span class="text-green-500 mr-2">✓</span> CSV export</li>
+                <li class="flex items-center opacity-50"><span class="text-red-500 mr-2">✗</span> AI-powered content ideas</li>
+                <li class="flex items-center opacity-50"><span class="text-red-500 mr-2">✗</span> Custom branding</li>
+                <li class="flex items-center opacity-50"><span class="text-red-500 mr-2">✗</span> Analytics integration</li>
+              </ul>
+              <p class="text-center mt-4 text-blue-600 font-bold">Current Plan</p>
+            </div>
+            
+            <div class="bg-blue-50 p-5 rounded-lg shadow-md transform scale-105 border-2 border-blue-300">
+              <div class="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-yellow-400 text-xs font-bold px-3 py-1 rounded-full text-blue-900">MOST POPULAR</div>
+              <h3 class="font-bold text-lg text-center mb-4 text-blue-800">Pro</h3>
+              <ul class="space-y-2">
+                <li class="flex items-center"><span class="text-green-500 mr-2">✓</span> 90-day content calendar</li>
+                <li class="flex items-center"><span class="text-green-500 mr-2">✓</span> Advanced hashtag research</li>
+                <li class="flex items-center"><span class="text-green-500 mr-2">✓</span> CSV & PDF export</li>
+                <li class="flex items-center"><span class="text-green-500 mr-2">✓</span> AI-powered content ideas</li>
+                <li class="flex items-center"><span class="text-green-500 mr-2">✓</span> Custom branding</li>
+                <li class="flex items-center opacity-50"><span class="text-red-500 mr-2">✗</span> Analytics integration</li>
+              </ul>
+              <button id="goPremiumPro" class="w-full mt-4 bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                Upgrade - $9.99/mo
+              </button>
+            </div>
+            
+            <div class="bg-white p-5 rounded-lg shadow-sm">
+              <h3 class="font-bold text-lg text-center mb-4 text-gray-800">Business</h3>
+              <ul class="space-y-2">
+                <li class="flex items-center"><span class="text-green-500 mr-2">✓</span> 365-day content calendar</li>
+                <li class="flex items-center"><span class="text-green-500 mr-2">✓</span> Advanced hashtag research</li>
+                <li class="flex items-center"><span class="text-green-500 mr-2">✓</span> All export formats</li>
+                <li class="flex items-center"><span class="text-green-500 mr-2">✓</span> AI-powered content ideas</li>
+                <li class="flex items-center"><span class="text-green-500 mr-2">✓</span> Custom branding</li>
+                <li class="flex items-center"><span class="text-green-500 mr-2">✓</span> Analytics integration</li>
+              </ul>
+              <button id="goPremiumBusiness" class="w-full mt-4 bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded">
+                Upgrade - $24.99/mo
+              </button>
+            </div>
+          </div>
         </div>
     </div>
 
@@ -301,5 +387,81 @@
             document.body.removeChild(link);
         });
     </script>
+    
+    <script>
+  // Countdown timer
+  function startCountdown() {
+    // Set the countdown for 24 hours from now
+    const countDownDate = new Date().getTime() + (24 * 60 * 60 * 1000);
+    
+    const countdownElement = document.getElementById('countdown');
+    
+    // Update the count down every 1 second
+    const x = setInterval(function() {
+      // Get today's date and time
+      const now = new Date().getTime();
+        
+      // Find the distance between now and the count down date
+      const distance = countDownDate - now;
+        
+      // Time calculations for hours, minutes and seconds
+      const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+        
+      // Display the result
+      countdownElement.innerHTML = 
+        String(hours).padStart(2, '0') + ":" + 
+        String(minutes).padStart(2, '0') + ":" + 
+        String(seconds).padStart(2, '0');
+        
+      // If the count down is finished, write some text
+      if (distance < 0) {
+        clearInterval(x);
+        countdownElement.innerHTML = "OFFER EXPIRED";
+      }
+    }, 1000);
+  }
+  
+  // Set up button handlers for premium features
+  function setupPremiumButtons() {
+    const premiumButtons = document.querySelectorAll('#goPremium, #goPremiumPro, #goPremiumBusiness');
+    
+    premiumButtons.forEach(button => {
+      button.addEventListener('click', function() {
+        // In a real implementation, this would redirect to a payment page
+        // For now, we'll show an alert
+        alert('🎉 Thanks for your interest in our premium plan! In a real implementation, this would take you to a payment page. For this demo, consider this a successful conversion!');
+        
+        // You could also redirect to a payment processor like Stripe or PayPal
+        // window.location.href = 'https://your-payment-page.com';
+      });
+    });
+  }
+  
+  // Initialize when the DOM is loaded
+  document.addEventListener('DOMContentLoaded', function() {
+    startCountdown();
+    setupPremiumButtons();
+    
+    // Initially hide premium features until content is generated
+    const premiumFeatures = document.getElementById('premiumFeatures');
+    if (premiumFeatures) {
+      premiumFeatures.classList.add('hidden');
+    }
+    
+    // Show premium features after content generation
+    const generateButton = document.querySelector('button[type="submit"]');
+    if (generateButton) {
+      generateButton.addEventListener('click', function() {
+        setTimeout(() => {
+          if (premiumFeatures) {
+            premiumFeatures.classList.remove('hidden');
+          }
+        }, 1000);
+      });
+    }
+  });
+</script>
 </body>
 </html>
